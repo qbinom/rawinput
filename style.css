@@ -1,0 +1,75 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #080808;
+  font-family: 'Courier New', monospace;
+  color: #c0c0c0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+}
+.titulo {
+  font-size: 1em;
+  text-transform: lowercase;
+  margin: 2em;
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+  animation: glitch 0.3s infinite;
+  mix-blend-mode: difference;
+}
+.parrafo {
+  font-size: 0.85em;uw 
+  margin: 2em;
+  margin-top: -1em;
+  line-height: 1.5em;
+  opacity: 0.4;
+  max-width: 40ch;
+  mix-blend-mode: difference;
+}
+
+/* Estilo para la sección de notas */
+.seccion-notas {
+  padding: 3em;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Cada nota aparece como un bloque separado */
+.nota {
+  margin-bottom: 2em;
+  padding: 1em;
+  border-left: 2px solid #666;
+  background-color: rgba(255, 255, 255, 0.02); /* sutil fondo translúcido */
+  backdrop-filter: blur(2px);
+}
+
+/* Título dentro de cada nota */
+.nota h2 {
+  font-size: 1.1em;
+  color: #ddd;
+  margin-bottom: 0.5em;
+}
+
+/* Párrafo de cada nota */
+.nota p {
+  font-size: 0.9em;
+  color: #aaa;
+  line-height: 1.6em;
+}
+
+/* Enlace para volver a la portada */
+.enlace-sutil {
+  display: block;
+  text-align: center;
+  margin-top: 3em;
+  color: #888;
+  text-decoration: none;
+  font-style: italic;
+}
+
+.enlace-sutil:hover {
+  color: #fff;
+}
+
