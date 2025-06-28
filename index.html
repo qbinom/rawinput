@@ -10,6 +10,43 @@
   <p class="parrafo">El sistema continúa recibiendo señales. Algunas son imágenes.</p>
 </body>
 </html>
+
+
+
 <!-- Botón que lleva a la sección de notas -->
 <a href="notas.html" class="boton-notas">→ notas</a>
 
+<!-- Acceso privado -->
+<div id="acceso-privado">
+  <button id="login-btn">Acceder</button>
+  <button id="logout-btn" style="display:none;">Salir</button>
+</div>
+
+<!-- Link oculto al panel de notas -->
+<div id="link-notas" style="display:none;">
+  <p>Estás logueado. Ir a <a href="notas.html">tu espacio de notas</a>.</p>
+</div>
+
+<!-- Netlify Identity Widget -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  netlifyIdentity.on("init", user => {
+    if (!user) {
+      netlifyIdentity.on("login", () => location.reload());
+    } else {
+      document.getElementById("login-btn").style.display = "none";
+      document.getElementById("logout-btn").style.display = "inline";
+      document.getElementById("link-notas").style.display = "block";
+    }
+  });
+
+  netlifyIdentity.init();
+
+  document.getElementById("login-btn").addEventListener("click", () => {
+    netlifyIdentity.open();
+  });
+
+  document.getElementById("logout-btn").addEventListener("click", () => {
+    netlifyIdentity.logout();
+  });
+</script>

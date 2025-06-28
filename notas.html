@@ -31,3 +31,26 @@
   <a href="index.html" class="enlace-sutil">← volver a RAW_INPUT</a>
 </body>
 </html>
+
+<script>
+  // Este evento espera que el usuario haga clic en "Publicar"
+  document.getElementById("enviar-nota").addEventListener("click", async () => {
+    const texto = document.getElementById("nota-texto").value;
+
+    // Obtenemos el token de autenticación del usuario
+    const user = netlifyIdentity.currentUser();
+    const token = await user.jwt();
+
+    const respuesta = await fetch("/.netlify/functions/guardar-nota", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ texto })
+    });
+
+    const resultado = await respuesta.json();
+    alert(resultado.message);
+  });
+</script>
