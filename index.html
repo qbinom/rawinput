@@ -27,20 +27,44 @@
 <!-- Netlify Identity Widget -->
 <!-- Carga el script necesario para manejar identidad -->
 <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+
+
+
 <script>
-  // Inicializa el widget de identidad de Netlify
+  // Inicia el widget de Netlify al cargar la página
   netlifyIdentity.init();
 
-  // Cuando se carga la página, abre automáticamente el formulario para registrarse
-  netlifyIdentity.on("init", () => {
-    netlifyIdentity.open('signup');
-  });
+  // Espera a que todo el contenido y el widget estén cargados
+  window.addEventListener("load", () => {
+    const loginBtn = document.getElementById("login-custom");
+    const logoutBtn = document.getElementById("logout-custom");
 
-  // Cuando el usuario se registra con éxito, se muestra en consola
-  netlifyIdentity.on("signup", user => {
-    console.log("Usuario registrado:", user);
+    // Cuando se hace clic en "Iniciar sesión", abre el modal de login
+    loginBtn.addEventListener("click", () => {
+      netlifyIdentity.open();
+    });
+
+    // Cuando el usuario se loguea exitosamente, muestra la zona privada
+    netlifyIdentity.on("login", user => {
+      document.getElementById("login-panel").style.display = "none";
+      document.getElementById("zona-privada").style.display = "block";
+      console.log("Usuario logueado:", user);
+    });
+
+    // Cuando se hace clic en "Cerrar sesión", cierra sesión
+    logoutBtn.addEventListener("click", () => {
+      netlifyIdentity.logout();
+    });
+
+    // Cuando el usuario cierra sesión, vuelve a mostrar el panel de login
+    netlifyIdentity.on("logout", () => {
+      document.getElementById("zona-privada").style.display = "none";
+      document.getElementById("login-panel").style.display = "block";
+      console.log("Sesión cerrada");
+    });
   });
 </script>
+
 <!-- ------------------------------------------------------------------------------------------ -->
 
 </body>
