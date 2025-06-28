@@ -2,73 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>raw input(actualizado)</title>
+  <title>raw input</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1 class="titulo">raw input</h1>
   <p class="parrafo">El sistema continúa recibiendo señales. Algunas son imágenes.</p>
-<!-- ------------------------------------------------------------------------------------------ -->
-<!-- Login personalizado -->
-<div id="login-panel">
-  <h2>Acceso privado</h2>
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Contraseña">
-  <button id="login-custom">Iniciar sesión</button>
-</div>
-
-<!-- Sección privada -->
-<div id="zona-privada" style="display: none;">
-  <p>Bienvenido. <a href="notas.html">Ir a tus notas</a></p>
-  <button id="logout-custom">Cerrar sesión</button>
-</div>
-<!-- ------------------------------------------------------------------------------------------ -->
-
-<!-- Netlify Identity Widget -->
-<!-- Carga el script necesario para manejar identidad -->
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-
-
-<script>
-  // Inicia el widget de Netlify al cargar la página
-  netlifyIdentity.init();
-
-  // Espera a que todo el contenido y el widget estén cargados
-  window.addEventListener("load", () => {
-    const loginBtn = document.getElementById("login-custom");
-    const logoutBtn = document.getElementById("logout-custom");
-
-    // Cuando se hace clic en "Iniciar sesión", abre el modal de login
-    loginBtn.addEventListener("click", () => {
-      netlifyIdentity.open();
-    });
-
-    // Cuando el usuario se loguea exitosamente, muestra la zona privada
-    netlifyIdentity.on("login", user => {
-      document.getElementById("login-panel").style.display = "none";
-      document.getElementById("zona-privada").style.display = "block";
-      console.log("Usuario logueado:", user);
-    });
-
-    // Cuando se hace clic en "Cerrar sesión", cierra sesión
-    logoutBtn.addEventListener("click", () => {
-      netlifyIdentity.logout();
-    });
-
-    // Cuando el usuario cierra sesión, vuelve a mostrar el panel de login
-    netlifyIdentity.on("logout", () => {
-      document.getElementById("zona-privada").style.display = "none";
-      document.getElementById("login-panel").style.display = "block";
-      console.log("Sesión cerrada");
-    });
-  });
-</script>
-
-<!-- ------------------------------------------------------------------------------------------ -->
-
 </body>
 </html>
-
-
-
