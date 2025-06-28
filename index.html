@@ -8,45 +8,43 @@
 <body>
   <h1 class="titulo">raw input</h1>
   <p class="parrafo">El sistema continúa recibiendo señales. Algunas son imágenes.</p>
+<!-- ------------------------------------------------------------------------------------------ -->
+<!-- Login personalizado -->
+<div id="login-panel">
+  <h2>Acceso privado</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Contraseña">
+  <button id="login-custom">Iniciar sesión</button>
+</div>
+
+<!-- Sección privada -->
+<div id="zona-privada" style="display: none;">
+  <p>Bienvenido. <a href="notas.html">Ir a tus notas</a></p>
+  <button id="logout-custom">Cerrar sesión</button>
+</div>
+<!-- ------------------------------------------------------------------------------------------ -->
+
+<!-- Netlify Identity Widget -->
+<!-- Carga el script necesario para manejar identidad -->
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script>
+  // Inicializa el widget de identidad de Netlify
+  netlifyIdentity.init();
+
+  // Cuando se carga la página, abre automáticamente el formulario para registrarse
+  netlifyIdentity.on("init", () => {
+    netlifyIdentity.open('signup');
+  });
+
+  // Cuando el usuario se registra con éxito, se muestra en consola
+  netlifyIdentity.on("signup", user => {
+    console.log("Usuario registrado:", user);
+  });
+</script>
+<!-- ------------------------------------------------------------------------------------------ -->
+
 </body>
 </html>
 
 
 
-<!-- Botón que lleva a la sección de notas -->
-<a href="notas.html" class="boton-notas">→ notas</a>
-
-<!-- Acceso privado -->
-<div id="acceso-privado">
-  <button id="login-btn">Acceder</button>
-  <button id="logout-btn" style="display:none;">Salir</button>
-</div>
-
-<!-- Link oculto al panel de notas -->
-<div id="link-notas" style="display:none;">
-  <p>Estás logueado. Ir a <a href="notas.html">tu espacio de notas</a>.</p>
-</div>
-
-<!-- Netlify Identity Widget -->
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<script>
-  netlifyIdentity.on("init", user => {
-    if (!user) {
-      netlifyIdentity.on("login", () => location.reload());
-    } else {
-      document.getElementById("login-btn").style.display = "none";
-      document.getElementById("logout-btn").style.display = "inline";
-      document.getElementById("link-notas").style.display = "block";
-    }
-  });
-
-  netlifyIdentity.init();
-
-  document.getElementById("login-btn").addEventListener("click", () => {
-    netlifyIdentity.open();
-  });
-
-  document.getElementById("logout-btn").addEventListener("click", () => {
-    netlifyIdentity.logout();
-  });
-</script>
