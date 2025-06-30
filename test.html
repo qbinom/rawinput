@@ -24,21 +24,28 @@
     );
 
     // Comentario: registrar un nuevo usuario
-    console.log("✅ Script activo: esperando click en 'Registrarse'");
-    document.getElementById('signup-btn').addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const username = document.getElementById('username').value;
+    const signupBtn = document.getElementById('signup-btn');
+if (signupBtn) {
+  console.log("🟢 Botón encontrado. Escuchando click...");
+  signupBtn.addEventListener('click', async () => {
+    console.log("🟡 Click detectado en botón Registrarse");
 
-      const { data, error } = await supabase.auth.signUp({ email, password });
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;
 
-      if (error) {
-        alert("⚠️ Error: " + error.message);
-      } else {
-        await supabase.from("profiles").insert([{ id: data.user.id, username }]);
-        alert("✅ Registro exitoso");
-      }
-    });
+    const { data, error } = await supabase.auth.signUp({ email, password });
+
+    if (error) {
+      alert("⚠️ Error: " + error.message);
+    } else {
+      await supabase.from("profiles").insert([{ id: data.user.id, username }]);
+      alert("✅ Registro exitoso");
+    }
+  });
+} else {
+  console.log("🔴 No se encontró el botón con id='signup-btn'");
+}
   </script>
 </body>
 </html>
