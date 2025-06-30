@@ -1,19 +1,71 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>raw input</title>
-  <link rel="stylesheet" href="style.css">
-</head>
+<!-- Supabase CDN y conexión -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // Comentario: conectamos con el proyecto Supabase
+  const supabase = createClient(
+    'https://byenalkrrkrhdxkyucyj.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE'
+  );
 
-<!--------------------------------------------------------------------------------------------->
-<!-- Enlace permanente para acceder a la página de notas -->
-<div class="zona-notas">
-  <button onclick="window.location.href='notas.html'">Ir a tus notas</button>
-</div>
-<!--------------------------------------------------------------------------------------------->
-<body>
-  <h1 class="titulo">raw input</h1>
-  <p class="parrafo">El sistema continúa recibiendo señales. Algunas son imágenes.</p>
-</body>
-</html>
+  // Comentario: registrar un nuevo usuario
+  document.getElementById('signup-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;
+
+    const { data, error } = await supabase.auth.signUp({ email, password });
+
+    if (error) {
+      alert('Error al registrarse: ' + error.message);
+    } else {
+      await supabase.from('profiles').insert([
+        { id: data.user.id, username }
+      ]);
+      alert('Registro exitoso. Revisa tu email para confirmar.');
+    }
+  });
+
+  // Comentario: iniciar sesión
+  document.getElementById('login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      alert('Error al iniciar sesión: ' + error.message);
+    } else {
+      showPrivateZone();
+    }
+  });
+
+  // Comentario: cerrar sesión
+  document.getElementById('logout-btn').addEventListener('click', async () => {
+    await supabase.auth.signOut();
+    document.getElementById('auth-panel').style.display = 'block';
+    document.getElementById('private-zone').style.display = 'none';
+  });
+
+  // Comentario: mostrar mensaje personalizado
+  async function showPrivateZone() {
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('username')
+      .eq('id', user.id)
+      .single();
+
+    const username = data?.username || 'usuario';
+    document.getElementById('welcome-msg').innerText = `Bienvenido, ${username}`;
+    document.getElementById('auth-panel').style.display = 'none';
+    document.getElementById('private-zone').style.display = 'block';
+  }
+
+  // Comentario: si ya está logueado, mostrar zona privada
+  supabase.auth.getSession().then(({ data: { session } }) => {
+    if (session) showPrivateZone();
+  });
+</script>
