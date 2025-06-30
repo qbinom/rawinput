@@ -38,8 +38,8 @@
     const texto = document.getElementById("nota-texto").value;
 
     // Obtenemos el token de autenticación del usuario
-    const user = netlifyIdentity.currentUser();
-    const token = await user.jwt();
+   // const user = netlifyIdentity.currentUser();
+    //const token = await user.jwt();
 
     const respuesta = await fetch("/.netlify/functions/guardar-nota", {
       method: "POST",
