@@ -34,14 +34,15 @@
   <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Script de autenticación -->
+  <!-- Lógica de autenticación -->
   <script>
+    // Conexión a Supabase
     const supabase = supabase.createClient(
       'https://byenalkrrkrhdxkyucyj.supabase.co',
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE'
     );
 
-    // Registrar nuevo usuario
+    // Registro de usuario
     document.getElementById('signup-btn').addEventListener('click', async () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
@@ -57,7 +58,7 @@
       }
     });
 
-    // Iniciar sesión
+    // Login de usuario
     document.getElementById('login-btn').addEventListener('click', async () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
@@ -71,14 +72,14 @@
       }
     });
 
-    // Cerrar sesión
+    // Logout
     document.getElementById('logout-btn').addEventListener('click', async () => {
       await supabase.auth.signOut();
       document.getElementById('auth-panel').style.display = 'block';
       document.getElementById('private-zone').style.display = 'none';
     });
 
-    // Mostrar zona privada
+    // Mostrar zona privada si está logueado
     async function showPrivateZone() {
       const { data: { user } } = await supabase.auth.getUser();
       const { data, error } = await supabase
@@ -93,7 +94,7 @@
       document.getElementById('private-zone').style.display = 'block';
     }
 
-    // Si ya está logueado, mostrar zona privada
+    // Verificar sesión activa al cargar
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) showPrivateZone();
     });
