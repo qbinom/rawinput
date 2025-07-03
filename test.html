@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Prueba de Registro</title>
 </head>
 <body>
@@ -15,35 +15,28 @@
   <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- Lógica de registro -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      alert("✅ Script cargado correctamente");
+  <script type="module">
+    const supabase = supabase.createClient(
+      'https://byenalkrrkrhdxkyucyj.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE'
+    );
 
-      const supabase = supabase.createClient(
-        'https://byenalkrrkrhdxkyucyj.supabase.co',
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE'
-      );
+    document.getElementById('signup-btn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const username = document.getElementById('username').value;
 
-      console.log("✅ Script activo: esperando click en 'Registrarse'");
+      const { data, error } = await supabase.auth.signUp({ email, password });
 
-      document.getElementById('signup-btn').addEventListener('click', async () => {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const username = document.getElementById('username').value;
-
-        const { data, error } = await supabase.auth.signUp({ email, password });
-
-        if (error) {
-          alert("⚠️ Error: " + error.message);
-        } else {
-          await supabase.from("profiles").insert([{ id: data.user.id, username }]);
-          alert("✅ Registro exitoso");
-         //Cambio mínimo para forzar redeploy -->
-        }
-      });
+      if (error) {
+        console.error("⚠️ Error al registrarse:", error);
+        alert("Error: " + error.message);
+      } else {
+        await supabase.from("profiles").insert([{ id: data.user.id, username }]);
+        console.log("✅ Registro exitoso:", data);
+        alert("✅ Registro exitoso");
+      }
     });
-    
   </script>
 </body>
 </html>
