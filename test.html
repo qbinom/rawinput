@@ -50,7 +50,8 @@
     .insert([{ id: userId, username }]);
 
   if (insertError) {
-    console.error("❌ Error al insertar en 'profiles':", insertError);
+    console.error("❌ Error al insertar en 'profiles':", insertError?.message || insertError);
+alert("Error al guardar nombre de usuario:\n" + (insertError?.message || "desconocido"));
     alert("Error al guardar nombre de usuario.");
     return;
   }
