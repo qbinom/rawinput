@@ -7,35 +7,50 @@
 <body>
   <h1>Prueba de Registro</h1>
 
+  <!-- Formulario -->
   <input type="email" id="email" placeholder="Email"><br>
   <input type="password" id="password" placeholder="Contraseña"><br>
   <input type="text" id="username" placeholder="Nombre de usuario"><br>
   <button id="signup-btn">Registrarse</button>
 
-  <!-- Supabase CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+  <!-- Supabase v2 via módulo ES -->
   <script type="module">
-    const supabase = supabase.createClient(
-      'https://byenalkrrkrhdxkyucyj.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE'
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    // Conexión Supabase
+    const supabase = createClient(
+      "https://byenalkrrkrhdxkyucyj.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE"
     );
 
-    document.getElementById('signup-btn').addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const username = document.getElementById('username').value;
+    // Evento al hacer clic
+    document.getElementById("signup-btn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const username = document.getElementById("username").value;
 
       const { data, error } = await supabase.auth.signUp({ email, password });
 
       if (error) {
-        console.error("⚠️ Error al registrarse:", error);
+        console.error("❌ Error de registro:", error);
         alert("Error: " + error.message);
-      } else {
-        await supabase.from("profiles").insert([{ id: data.user.id, username }]);
-        console.log("✅ Registro exitoso:", data);
-        alert("✅ Registro exitoso");
+        return;
       }
+
+      console.log("✅ Usuario creado:", data);
+
+      // Insertar username en tabla 'profiles'
+      const { error: insertError } = await supabase
+        .from("profiles")
+        .insert([{ id: data.user.id, username }]);
+
+      if (insertError) {
+        console.error("❌ Error al insertar en 'profiles':", insertError);
+        alert("Error al guardar nombre de usuario.");
+        return;
+      }
+
+      alert("✅ Registro exitoso");
     });
   </script>
 </body>
