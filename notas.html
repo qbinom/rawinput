@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Zona privada</title>
+</head>
+<body>
+  <h1>Bienvenido a tu zona privada</h1>
+
+  <div id="welcome"></div>
+
+  <div id="username-section" style="display: none;">
+    <p>No tenés nombre de usuario aún.</p>
+    <input type="text" id="username-input" placeholder="Elegí tu nombre de usuario" />
+    <button id="save-username-btn">Guardar</button>
+  </div>
+
+  <button id="logout-btn">Cerrar sesión</button>
+
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const supabase = createClient(
+      "https://byenalkrrkrhdxkyucyj.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE"
+    );
+
+    const { data: session } = await supabase.auth.getSession();
+
+    if (!session.session) {
+      alert("Necesitás iniciar sesión.");
+      window.location.href = "test.html";
+    } else {
+      const user = session.session.user;
+      document.getElementById("welcome").textContent = `Bienvenido, ${user.email}`;
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+
+      if (error) {
+        console.error("⚠️ No se pudo consultar el perfil:", error);
+        alert("Error al consultar el perfil.");
+      } else if (!data?.username) {
+        document.getElementById("username-section").style.display = "block";
+      } else {
+        document.getElementById("welcome").textContent += ` (usuario: ${data.username})`;
+      }
+    }
+
+    document.getElementById("save-username-btn").addEventListener("click", async () => {
+      const username = document.getElementById("username-input").value.trim();
+      const user = (await supabase.auth.getUser()).data.user;
+
+      const { error } = await supabase
+        .from("profiles")
+        .update({ username })
+        .eq("id", user.id);
+
+      if (error) {
+        alert("Error al guardar nombre de usuario");
+        console.error("❌", error);
+      } else {
+        alert("✅ Nombre de usuario guardado");
+        location.reload();
+      }
+    });
+
+    document.getElementById("logout-btn").addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "test.html";
+    });
+  </script>
+</body>
+</html>
