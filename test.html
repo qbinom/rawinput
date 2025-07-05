@@ -2,63 +2,39 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Prueba de Registro</title>
+  <title>Registro</title>
 </head>
 <body>
-  <h1>Prueba de Registro</h1>
+  <h1>Registro con confirmación de email</h1>
 
-  <!-- Formulario -->
-  <input type="email" id="email" placeholder="Email"><br>
-  <input type="password" id="password" placeholder="Contraseña"><br>
-  <input type="text" id="username" placeholder="Nombre de usuario"><br>
+  <input type="email" id="email" placeholder="Email" /><br>
+  <input type="password" id="password" placeholder="Contraseña (mínimo 6 caracteres)" /><br>
   <button id="signup-btn">Registrarse</button>
 
-  <!-- Supabase v2 via módulo ES -->
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    // Conexión Supabase
     const supabase = createClient(
       "https://byenalkrrkrhdxkyucyj.supabase.co",
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE"
     );
 
-    // Evento al hacer clic
-   document.getElementById("signup-btn").addEventListener("click", async () => {
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-  const username = document.getElementById("username").value;
+    document.getElementById("signup-btn").addEventListener("click", async () => {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-  const result = await supabase.auth.signUp({ email, password });
+      const { data, error } = await supabase.auth.signUp({ email, password });
 
-  if (result.error) {
-    console.error("❌ Error de registro:", result.error);
-    alert("Error: " + result.error.message);
-    return;
-  }
+      if (error) {
+        console.error("❌ Error al registrarse:", error);
+        alert("Error: " + error.message);
+        return;
+      }
 
-  const userId = result.data?.user?.id;
-
-  if (!userId) {
-    console.error("❌ No se obtuvo el ID del usuario.");
-    alert("Error: No se pudo obtener el ID del usuario.");
-    return;
-  }
-
-  const { error: insertError } = await supabase
-    .from("profiles")
-    .insert([{ id: userId, username }]);
-
-  if (insertError) {
-    console.error("❌ Error al insertar en 'profiles':", insertError?.message || insertError);
-alert("Error al guardar nombre de usuario:\n" + (insertError?.message || "desconocido"));
-    alert("Error al guardar nombre de usuario.");
-    return;
-  }
-
-  alert("✅ Registro exitoso");
-});
+      alert("✅ Registro exitoso. Revisa tu correo para confirmar.");
+    });
   </script>
 </body>
 </html>
+
 
