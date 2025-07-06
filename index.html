@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>raw input</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Librería de Supabase desde CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js" defer></script>
+
+  <!-- Inicializa Supabase globalmente -->
   <script src="supabase.js" defer></script>
+
+  <!-- Lógica de login y registro -->
   <script src="auth.js" defer></script>
 </head>
 <body>
@@ -18,8 +24,8 @@
 
   <div id="auth-panel">
     <h2>Acceso privado</h2>
-    <input type="email" id="email" placeholder="Email"><br>
-    <input type="password" id="password" placeholder="Contraseña"><br>
+    <input type="email" id="email" placeholder="Email" /><br />
+    <input type="password" id="password" placeholder="Contraseña" /><br />
     <button id="login">Iniciar sesión</button>
     <button id="register">Registrarse</button>
   </div>
