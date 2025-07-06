@@ -1,14 +1,9 @@
 // supabase.js
 
-// Creamos una instancia del cliente Supabase usando la librería cargada desde CDN.
-// Esta versión es compatible con navegadores sin usar módulos ES.
-
-// Reemplazá estas dos líneas con tu URL real y tu anon key:
+// URL y clave pública del proyecto RAW_INPUT en Supabase
 const supabaseUrl = 'https://byenalrkrkrhdxkyucyj.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbGtycmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTExMzQzODIsImV4cCI6MjA2NjcxMDM4Mn0.s_IySe5Pk87zhwiCMgdb5iKG2SKdgCK7-k953zqZloE
+const supabaseKey = 'eyJhbgciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5ZW5hbHJrcmtyaGR4a3l1Y3lqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTgMzgzNTg4LCJleHAiOjIwMzM5NTk1ODh9.K0y05P9hvn3xqXo3gOp6LoF5ghKHid7fYHdL7UsXlsQ';
 
-// Inicializamos Supabase para poder usarlo en el resto del código
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-
+// Creamos el cliente y lo asignamos al objeto global "window" para que auth.js lo pueda usar
+window.supabase = supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
